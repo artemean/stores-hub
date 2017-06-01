@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "firebase": "^4.1.1",
+    "react-router-dom": "^4.1.1",
     "react-scripts": "1.0.7",
     "reactfire": "^1.0.0"
   },
