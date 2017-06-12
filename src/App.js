@@ -14,8 +14,8 @@ firebase.initializeApp(config);
 
 class TodoList2 extends Component {
     render() {
-        var _this = this;
-        var createItem = function(item, index) {
+        const _this = this;
+        const createItem = function(item, index) {
             return (
                 <li key={ index }>
                     { item.text }
@@ -39,9 +39,10 @@ class TodoApp2 extends Component {
     componentWillMount() {
         this.firebaseRef = firebase.database().ref('todoApp/items');
         this.firebaseRef.limitToLast(25).on('value', function(dataSnapshot) {
-            var items = [];
+            let items = [];
+
             dataSnapshot.forEach(function(childSnapshot) {
-                var item = childSnapshot.val();
+                let item = childSnapshot.val();
                 item['.key'] = childSnapshot.key;
                 items.push(item);
             });
@@ -56,20 +57,18 @@ class TodoApp2 extends Component {
         this.firebaseRef.off();
     }
 
-    onChange = (e) => {
-        this.setState({text: e.target.value});
-    };
-
     removeItem(key) {
-        var firebaseRef = firebase.database().ref('todoApp/items');
+        const firebaseRef = firebase.database().ref('todoApp/items');
         firebaseRef.child(key).remove();
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        if (this.state.text && this.state.text.trim().length !== 0) {
+        const textValue = e.target.querySelector('input').value;
+
+        if (textValue && textValue.trim().length !== 0) {
             this.firebaseRef.push({
-                text: this.state.text
+                text: textValue
             });
             this.setState({
                 text: ''
@@ -82,7 +81,7 @@ class TodoApp2 extends Component {
             <div>
                 <TodoList2 items={ this.state.items } removeItem={ this.removeItem } />
                 <form onSubmit={ this.handleSubmit }>
-                    <input onChange={ this.onChange } value={ this.state.text } />
+                    <input />
                     <button>{ 'Add #' + (this.state.items.length + 1) }</button>
                 </form>
             </div>
@@ -101,3 +100,4 @@ class App extends Component {
 }
 
 export default App;
+
